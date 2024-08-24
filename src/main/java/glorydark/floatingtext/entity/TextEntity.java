@@ -4,6 +4,7 @@ import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
+import glorydark.floatingtext.FloatingTextMain;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -22,12 +23,17 @@ public class TextEntity extends Entity {
         return 64;
     }
 
+    @Override
     protected void initEntity() {
         super.initEntity();
         this.setNameTagVisible(true);
         this.setNameTagAlwaysVisible(true);
         this.setImmobile(true);
         this.getDataProperties().putLong(0, 65536L);
+
+        if (FloatingTextMain.serverPlat.equals("mot")) {
+            this.setCanBeSavedWithChunk(false);
+        }
     }
 
     public Player getOwner() {

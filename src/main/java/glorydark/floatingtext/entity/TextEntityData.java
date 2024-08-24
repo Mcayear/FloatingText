@@ -67,9 +67,6 @@ public class TextEntityData {
         TextEntity entity = new TextEntity(this.location.getChunk(), Entity.getDefaultNBT(this.location), null, this);
         entity.spawnToAll();
         entity.scheduleUpdate();
-        if (FloatingTextMain.serverPlat.equals("mot")) {
-            entity.setCanBeSavedWithChunk(false);
-        }
         this.textEntity = entity;
     }
 
@@ -109,13 +106,7 @@ public class TextEntityData {
             players.values().forEach(entity::spawnTo);
             this.textEntity = entity;
         } else {
-            TextEntity entity = new TextEntity(this.location.getChunk(), Entity.getDefaultNBT(this.location), null, this);
-            entity.scheduleUpdate();
-            if (FloatingTextMain.serverPlat.equals("mot")) {
-                entity.setCanBeSavedWithChunk(false);
-            }
-            entity.spawnToAll();
-            this.textEntity = entity;
+            spawnSimpleFloatingText();
         }
     }
 }

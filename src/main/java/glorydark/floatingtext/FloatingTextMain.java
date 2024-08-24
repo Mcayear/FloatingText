@@ -6,12 +6,11 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.entity.EntityDamageEvent;
-import cn.nukkit.event.player.PlayerJoinEvent;
+import cn.nukkit.event.player.PlayerLocallyInitializedEvent;
 import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Location;
 import cn.nukkit.plugin.PluginBase;
-import cn.nukkit.scheduler.AsyncTask;
 import cn.nukkit.utils.Config;
 import glorydark.floatingtext.command.FloatingTextCommand;
 import glorydark.floatingtext.entity.TextEntity;
@@ -150,13 +149,10 @@ public class FloatingTextMain extends PluginBase implements Listener {
     }
 
     @EventHandler
-    public void PlayerJoinEvent(PlayerJoinEvent event) {
+    public void PlayerJoinEvent(PlayerLocallyInitializedEvent event) {
         Player player = event.getPlayer();
         for (TextEntityData textEntityData : this.textEntitiesDataList) {
-            if (textEntityData.isEnableTipsVariable()) {
-                textEntityData.checkEntity();
-                //textEntityData.spawnTipsVariableFloatingTextTo(player);
-            }
+            textEntityData.respawnTo(player);
         }
     }
 

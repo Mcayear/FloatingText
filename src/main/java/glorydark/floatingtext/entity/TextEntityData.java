@@ -36,16 +36,7 @@ public class TextEntityData {
 
     public void setLines(List<String> lines) {
         this.lines = lines;
-        StringBuilder text = new StringBuilder();
-        if (!lines.isEmpty()) {
-            for (int i = 0; i < lines.size(); i++) {
-                text.append(lines.get(i));
-                if (i != lines.size() - 1) {
-                    text.append("\n");
-                }
-            }
-        }
-        this.replacedText = text.toString();
+        this.replacedText = String.join("\n", lines);
     }
 
     public String getText() {
@@ -76,6 +67,14 @@ public class TextEntityData {
 
     public String getName() {
         return name;
+    }
+
+    public void respawnTo(Player player) {
+        if (this.textEntity == null) return;
+
+        if (!this.location.getLevelName().equals(player.getLevelName())) return;
+
+        textEntity.spawnTo(player);
     }
 
     public void checkEntity() {

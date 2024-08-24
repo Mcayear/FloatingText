@@ -18,12 +18,15 @@ public class TextEntityWithTipsVariable extends TextEntity {
         super(chunk, nbt, owner, data);
     }
 
-    public void replaceTipVariable() {
-        String replaceText = this.getData().getText();
-        if (replaceText.isEmpty()) {
-            return;
-        }
-        this.setNameTag(Api.strReplace(this.data.getText(), this.owner));
+    public void replaceTipVariable(Player player) {
+//        String replaceText = this.getData().getText();
+//        if (replaceText.isEmpty()) {
+//            return;
+//        }
+//        this.setNameTag(Api.strReplace(this.data.getText(), this.owner));
+        EntityMetadata metadata = new EntityMetadata();
+        metadata.put(new StringEntityData(DATA_NAMETAG, Api.strReplace(this.data.getText(), player)));
+        this.sendData(player, metadata);
     }
 
     @Override
@@ -36,18 +39,14 @@ public class TextEntityWithTipsVariable extends TextEntity {
         if (players.isEmpty()) {
             return super.onUpdate(currentTick);
         }
-        this.replaceTipVariable();
-        players.values().forEach(player -> {
-            EntityMetadata metadata = new EntityMetadata();
-            metadata.put(new StringEntityData(DATA_NAMETAG, Api.strReplace(this.data.getText(), player)));
-            this.sendData(player, metadata);
-        });
+        players.values().forEach(this::replaceTipVariable);
         return super.onUpdate(currentTick);
     }
 
     @Override
     public void spawnTo(Player player) {
         player.dataPacket(createAddEntityPacket(player));
+        this.replaceTipVariable(player);
     }
 
     public DataPacket createAddEntityPacket(Player player) {

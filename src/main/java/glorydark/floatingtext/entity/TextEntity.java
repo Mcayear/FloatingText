@@ -45,14 +45,15 @@ public class TextEntity extends Entity {
     }
 
     @Override
+    public void spawnTo(Player player) {
+        super.spawnTo(player);
+        this.setNameTag(getData().getText());
+    }
+
+    @Override
     public boolean onUpdate(int currentTick) {
-        for (Map.Entry<Integer, Player> entry : new ArrayList<>(this.hasSpawned.entrySet())) {
-            Player player = entry.getValue();
-            if (!player.isOnline() || player.getLevel() != this.getLevel()) {
-                this.despawnFrom(player);
-                this.hasSpawned.remove(entry.getKey());
-            }
-        }
+        if (this.closed) return false;
+
         return super.onUpdate(currentTick);
     }
 }

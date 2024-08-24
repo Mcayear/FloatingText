@@ -5,9 +5,7 @@ import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.level.Location;
 import glorydark.floatingtext.FloatingTextMain;
-import org.checkerframework.checker.units.qual.A;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -104,19 +102,19 @@ public class TextEntityData {
 
         if (enableTipsVariable) {
             TextEntityWithTipsVariable entity = new TextEntityWithTipsVariable(this.location.getChunk(), Entity.getDefaultNBT(this.location), null, this);
-            players.values().forEach(entity::spawnTo);
             entity.scheduleUpdate();
             if (FloatingTextMain.serverPlat.equals("mot")) {
                 entity.setCanBeSavedWithChunk(false);
             }
+            players.values().forEach(entity::spawnTo);
             this.textEntity = entity;
         } else {
             TextEntity entity = new TextEntity(this.location.getChunk(), Entity.getDefaultNBT(this.location), null, this);
-            entity.spawnToAll();
             entity.scheduleUpdate();
             if (FloatingTextMain.serverPlat.equals("mot")) {
                 entity.setCanBeSavedWithChunk(false);
             }
+            entity.spawnToAll();
             this.textEntity = entity;
         }
     }

@@ -12,8 +12,6 @@ public class TextEntity extends Entity {
     protected Player owner;
     protected TextEntityData data;
 
-    public final String WaitingForEditString = "待编辑...";
-
     public TextEntity(FullChunk chunk, CompoundTag nbt, Player owner, TextEntityData data) {
         super(chunk, nbt);
         this.data = data;

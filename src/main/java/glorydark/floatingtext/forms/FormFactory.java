@@ -4,10 +4,7 @@ import cn.lanink.gamecore.form.windows.AdvancedFormWindowCustom;
 import cn.lanink.gamecore.form.windows.AdvancedFormWindowModal;
 import cn.lanink.gamecore.form.windows.AdvancedFormWindowSimple;
 import cn.nukkit.Player;
-import cn.nukkit.form.element.ElementButton;
-import cn.nukkit.form.element.ElementInput;
-import cn.nukkit.form.element.ElementLabel;
-import cn.nukkit.form.element.ElementToggle;
+import cn.nukkit.form.element.*;
 import cn.nukkit.utils.Config;
 import glorydark.floatingtext.FloatingTextMain;
 
@@ -26,10 +23,10 @@ public class FormFactory {
     public static HashMap<Player, Integer> editPlayerCaches = new HashMap<>();
 
     public static void showAdminMain(Player player) {
-        AdvancedFormWindowSimple simple = new AdvancedFormWindowSimple("浮空字管理面板", "请选择需要的功能");
-        simple.addButton(new ElementButton("创建浮空字"));
-        simple.addButton(new ElementButton("编辑/删除浮空字"));
-        simple.addButton(new ElementButton("重载数据"));
+        AdvancedFormWindowSimple simple = new AdvancedFormWindowSimple("§f浮空字管理面板", "请选择需要的功能");
+        simple.addButton(new ElementButton("创建浮空字", new ElementButtonImageData("path", "textures/ui/color_plus")));
+        simple.addButton(new ElementButton("编辑/删除浮空字", new ElementButtonImageData("path", "textures/ui/icon_setting")));
+        simple.addButton(new ElementButton("重载数据", new ElementButtonImageData("path", "textures/ui/refresh_light")));
         simple.onClicked((elementButton, player1) -> {
             switch (simple.getResponse().getClickedButtonId()) {
                 case 0:

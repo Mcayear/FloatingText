@@ -18,6 +18,7 @@ import glorydark.floatingtext.entity.TextEntity;
 import glorydark.floatingtext.entity.TextEntityData;
 import glorydark.floatingtext.entity.TextEntityWithTipsVariable;
 import glorydark.floatingtext.forms.FormFactory;
+import glorydark.floatingtext.tasks.CheckEntityFloatingTextTask;
 import glorydark.floatingtext.utils.Tools;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class FloatingTextMain extends PluginBase implements Listener {
     public List<TextEntityData> textEntitiesDataList = new ArrayList<>();
     public String command;
     public boolean tipsLoaded;
+    public static String serverPlat = "nukkit";
 
     public static FloatingTextMain getInstance() {
         return instance;
@@ -42,6 +44,9 @@ public class FloatingTextMain extends PluginBase implements Listener {
 
     public void onLoad() {
         getLogger().info("FloatingText onLoad");
+        if (Server.getInstance().getCodename().equalsIgnoreCase("mot")) {
+            serverPlat = "mot";
+        }
     }
 
     public void onEnable() {
@@ -55,23 +60,7 @@ public class FloatingTextMain extends PluginBase implements Listener {
         this.loadAll();
         this.getServer().getPluginManager().registerEvents(this, this);
         this.getServer().getCommandMap().register("", new FloatingTextCommand(this.command));
-        this.getServer().getScheduler().scheduleRepeatingTask(this, new AsyncTask() {
-            @Override
-            public void onRun() {
-                for (Level level : Server.getInstance().getLevels().values()) {
-                    for (Entity entity : level.getEntities()) {
-                        if (entity instanceof TextEntity) {
-                            if (entity instanceof TextEntityWithTipsVariable) {
-                                TextEntityWithTipsVariable textEntity = (TextEntityWithTipsVariable) entity;
-                                textEntity.replaceTipVariable();
-                            } else {
-                                entity.setNameTag(((TextEntity) entity).getData().getText());
-                            }
-                        }
-                    }
-                }
-            }
-        }, 1, true);
+        this.getServer().getScheduler().scheduleRepeatingTask(this, new CheckEntityFloatingTextTask(this), 60);
         this.getLogger().info("FloatingText onEnable");
     }
 
@@ -142,13 +131,14 @@ public class FloatingTextMain extends PluginBase implements Listener {
             }
         }
         for (TextEntityData textEntityData : this.textEntitiesDataList) {
-            if (textEntityData.isEnableTipsVariable()) {
-                for (Player value : Server.getInstance().getOnlinePlayers().values()) {
-                    textEntityData.spawnTipsVariableFloatingTextTo(value);
-                }
-            } else {
-                textEntityData.spawnSimpleFloatingText();
-            }
+            textEntityData.checkEntity();
+//            if (textEntityData.isEnableTipsVariable()) {
+//                for (Player value : Server.getInstance().getOnlinePlayers().values()) {
+//                    textEntityData.spawnTipsVariableFloatingTextTo(value);
+//                }
+//            } else {
+//                textEntityData.spawnSimpleFloatingText();
+//            }
         }
     }
 
@@ -164,7 +154,8 @@ public class FloatingTextMain extends PluginBase implements Listener {
         Player player = event.getPlayer();
         for (TextEntityData textEntityData : this.textEntitiesDataList) {
             if (textEntityData.isEnableTipsVariable()) {
-                textEntityData.spawnTipsVariableFloatingTextTo(player);
+                textEntityData.checkEntity();
+                //textEntityData.spawnTipsVariableFloatingTextTo(player);
             }
         }
     }
